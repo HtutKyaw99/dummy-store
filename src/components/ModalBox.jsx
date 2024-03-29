@@ -15,8 +15,11 @@ import {
   Input,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { clearCart } from "../app/features/cartSlice";
 
 export default function ModalBox() {
+  const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const initialRef = React.useRef(null);
@@ -25,6 +28,7 @@ export default function ModalBox() {
   const navigate = useNavigate();
 
   const handleCheckout = () => {
+    dispatch(clearCart());
     navigate("/");
   };
 
