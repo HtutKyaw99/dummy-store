@@ -2,7 +2,9 @@ import { useDispatch, useSelector } from "react-redux";
 import CartProduct from "../components/CartProduct";
 import { useEffect } from "react";
 import { calculateTotal } from "../app/features/cartSlice";
-import Modal from "../components/Modal";
+import ModalBox from "../components/ModalBox";
+
+import { Button, Text } from "@chakra-ui/react";
 
 export default function Cart() {
   const { products, total } = useSelector((state) => state.cart);
@@ -14,16 +16,34 @@ export default function Cart() {
   }, [products, dispatch]);
 
   if (products.length === 0)
-    return <h1 className="text-xl text-center my-3">Your Cart is empty</h1>;
+    return (
+      <Text fontSize="xl" textAlign="center">
+        Your Cart is empty
+      </Text>
+    );
   return (
     <div className="flex flex-col">
       {products?.map((product) => (
         <CartProduct key={product.id} product={product} />
       ))}
-      <h3 className="text-center my-3 text-xl">Total : ${total.toFixed(2)}</h3>
-      <button className="text-center my-3 bg-blue-500 w-fit mx-auto px-3 py-3 rounded-lg text-white">
-        Checkout
-      </button>
+      <Text
+        textAlign="center"
+        fontSize="xl"
+        marginTop="30px"
+        marginBottom="10px"
+      >
+        Total : ${total.toFixed(2)}
+      </Text>
+      {/* <Button
+        colorScheme="blue"
+        variant="ghost"
+        width="fit-content"
+        marginX="auto"
+        borderRadius="10px"
+      >
+        CheckOut
+      </Button> */}
+      <ModalBox />
       {/* <div className="absolute bg-blue-100 p-4 rounded-lg">
         <Modal />
       </div> */}
