@@ -1,6 +1,6 @@
 import React from "react";
 
-import { useDisclosure } from "@chakra-ui/react";
+import { HStack, Text, useDisclosure, useToast } from "@chakra-ui/react";
 import {
   Modal,
   ModalOverlay,
@@ -15,7 +15,7 @@ import {
   Input,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { clearCart } from "../app/features/cartSlice";
 
 export default function ModalBox() {
@@ -25,11 +25,21 @@ export default function ModalBox() {
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
 
+  const { total } = useSelector((state) => state.cart);
+
   const navigate = useNavigate();
+  const toast = useToast();
 
   const handleCheckout = () => {
     dispatch(clearCart());
     navigate("/");
+    toast({
+      title: "Payment Successfully",
+      description: "We are very delightful to choosing us",
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    });
   };
 
   return (
@@ -42,7 +52,7 @@ export default function ModalBox() {
         marginY="10px"
         onClick={onOpen}
       >
-        Open Modal
+        CheckOut
       </Button>
 
       <Modal
@@ -53,7 +63,9 @@ export default function ModalBox() {
       >
         <ModalOverlay />
         <ModalContent maxW="90%">
-          <ModalHeader textAlign="center">Thank u for purchase !</ModalHeader>
+          <ModalHeader textAlign="center">
+            Thank u for choosing us !
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
             <FormControl>
@@ -73,10 +85,15 @@ export default function ModalBox() {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={handleCheckout}>
-              Save
-            </Button>
-            <Button onClick={onClose}>Cancel</Button>
+            <HStack justifyContent="space-between" width="100%">
+              <Text>Total Amount : $ {total}</Text>
+              <HStack>
+                <Button colorScheme="blue" mr={3} onClick={handleCheckout}>
+                  Pay
+                </Button>
+                <Button onClick={onClose}>Cancel</Button>
+              </HStack>
+            </HStack>
           </ModalFooter>
         </ModalContent>
       </Modal>
